@@ -1,0 +1,48 @@
+# Install Packages
+
+# install.packages("maps")
+#install.packages("plot3D")
+#install.packages("mapdata")
+#install.packages("ggmap")
+
+
+# Import required libraries
+
+suppressWarnings(library(ggplot2))
+suppressWarnings(library(hexbin))
+suppressWarnings(library(dplyr))
+suppressWarnings(library(gapminder))
+suppressWarnings(library(ggmap))
+suppressWarnings(library(maps))
+suppressWarnings(library(mapdata))
+suppressWarnings(library(plot3D))
+suppressWarnings(library(plotly))
+
+
+# read in ppg file
+ppg <- read.csv('ppg2008.csv')
+head(ppg)
+
+# read in costco file
+costco <- read.csv('costco.csv')
+head(costco)
+
+# create heatmap
+select(ppg, -1)
+ppg_matrix <- data.matrix(ppg)
+heatmap(ppg_matrix, Colv = NA, Rowv = NA, scale='column',xlab="Stats", ylab="Values", main="Stats of 2008 Season")
+
+# create spatail map
+bbox <- ggmap::make_bbox(lat = max(costco$Latitude), lon = max(costco$Longitude), data = costco)
+bbox
+
+
+
+
+# create contour Plot
+x=ppg$PTS
+y=ppg$MIN
+z=ppg$AST
+df <- data.frame(x=x,y=y,z=z)
+p <- plotly::plot_ly(data = df, x=~x,y=~y, z=~z, type = "contour", colorscale='Jet')
+p
